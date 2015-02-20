@@ -169,3 +169,15 @@ a {
 	margin-top:10%;
 	left:6%;
 }
+#form {
+  position: absolute;
+  float:right;
+  bottom: 3%;
+  right: 5%;
+}
+#cc {
+  position: absolute;
+  font-weight: normal;
+  font-size: 50%;
+  bottom: 3%;
+}
