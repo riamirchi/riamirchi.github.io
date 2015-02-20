@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<meta charset="utf-8" />
+		<title>The Browntown Countdown</title>
+		<link rel="stylesheet" type="text/css" href="css/countdown.css">
+		<link  href="http://fonts.googleapis.com/css?family=Reenie+Beanie:regular" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> 
+	</head>
+    
+    <body>
+    <div class="content"> Brown class of 2015, you are graduating in </br> <span id="timeLeft"></span>
+     
+<!--      <div style="width:400px;margin:auto;"><div style="text-align:center;font-size:24px;padding-bottom:5px;"></div>
+ -->
+     <!-- <object data="http://www.widget.knowndays.com/p/countdown-may-24.html" style="width:400px;height:60px;"></object><span style="font-size:12px;float:right;padding-top:2px;"></span> -->
+<!--      <iframe src="http://free.timeanddate.com/countdown/i4jm25g4/n878/cf12/cm0/cu4/ct0/cs0/ca0/co0/cr0/ss0/cacfff/cpcfff/pct/tcfff/fs100/szw448/szh189/iso2015-05-24T13:00:00" allowTransparency="true" frameborder="0" width="171" height="40"></iframe>
+ -->
+ 
+    <!-- <a href="#"> -->
+    <div id="buckitlist">
+      	<div id="buckitlist-title" style="text-decoration:underline">Bucket List</div>
+		<div id="buckitlist-entry"> <span id="buck"></span></div> 
+		<div><a href="#" id="nextbucket" style="color:black;">Next</a></div>
+	</div>
+
+  	<script>
+ function updateTimeSpan(elem_id, date) {
+     var theSpan = document.getElementById('timeLeft');
+     var today = new Date();
+     var target = new Date(2015, 4, 24, 13, 0,0,0).getTime();
+       var curr_time = today.getTime();
+      var seconds_left = (target - curr_time) / 1000;
+
+    var days, hours, minutes, seconds;
+
+	  days = parseInt(seconds_left / 86400);
+      seconds_left = seconds_left % 86400;
+      hours = parseInt(seconds_left / 3600);
+      seconds_left = seconds_left % 3600;
+      minutes = parseInt(seconds_left / 60);
+      seconds = parseInt(seconds_left % 60);
+
+     theSpan.innerHTML = days + ' days, ' + hours + ' hours, ' + minutes + ' minutes, and ' + seconds + ' seconds!';
+     setTimeout('updateTimeSpan()', 100);
+}
+
+ onload = updateTimeSpan();
+
+///get data for bucketlist
+
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+bucket_list_data = null;
+
+function getdata(mycallback) {
+
+	// getJSON stuff goes here
+	$.getJSON("https://spreadsheets.google.com/feeds/cells/12tuAnUz5m6SWbCGjLJ1o_XjPLNbibJCmPFaPKLNzQbg/1/public/values?alt=json", function(data) {
+			bucket_list_data = data;
+
+
+				//move this stuff into new function, for calling in an onclick callback
+		// var row = (data.feed.entry.length/3)-1;
+
+		// var randRow = getRandomInt(1, row);
+
+		// var realRandRow = randRow*3 -1;
+
+		// var item= data.feed.entry[realRandRow].content.$t;
+		// console.log(data.feed.entry[realRandRow].content.$t); //do whatever you want with data
+ 		
+ 	// 	var buck = document.getElementById('buck');
+		// buck.innerHTML = " "+ item;
+
+ 		mycallback();
+	})
+}
+
+function update_postit() {
+	// retrieve random bucket list entry, and put it on post it
+
+					//move this stuff into new function, for calling in an onclick callback
+		var row = (bucket_list_data.feed.entry.length/3)-1;
+
+		var randRow = getRandomInt(1, row);
+
+		var realRandRow = randRow*3 -1;
+
+		var item= bucket_list_data.feed.entry[realRandRow].content.$t;
+		console.log(bucket_list_data.feed.entry[realRandRow].content.$t); //do whatever you want with data
+ 		
+ 		var buck = $('#buck');
+ 		console.log('' + item);
+		buck.html(" "+ item);
+}
+
+function scheduleUpdate() {
+	setTimeout(function() {
+		getdata(scheduleUpdate);
+	}, 5000);
+}
+
+$(document).ready(function() {	
+
+	getdata(function(){
+		scheduleUpdate();
+		update_postit();
+	});
+	$('#nextbucket').click(function(){
+		update_postit();
+		return false;
+	});
+
+});
+
+
+</script>
+
+<div style="font-family:Courier;">
+
+<a href="https://docs.google.com/a/brown.edu/forms/d/16klmS5wGgVH_MWBExgInXEZYUnInvxIC-kThWs24GGQ/viewform?usp=send_form">Submit your Bucket List Item Here</a>
+
+</div>
+
+	</div>
+
+
+	</body>
+</html>
